@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+
+<div th:fragment="footer">
+
+    <hr>
+
+    <p style="text-align:center;">
+        © 2025 SGE - Projet Spring Boot
+    </p>
+
+    <div style="text-align:center;">
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit">
+
+                Déconnexion
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

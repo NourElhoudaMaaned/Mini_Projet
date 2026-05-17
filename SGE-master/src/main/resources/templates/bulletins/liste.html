@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Bulletins</title>
+
+    <style>
+
+        table{
+            width:100%;
+            border-collapse: collapse;
+        }
+
+        th,td{
+            border:1px solid black;
+            padding:10px;
+        }
+
+        .admis{
+            background-color:#d4edda;
+        }
+
+        .ajourne{
+            background-color:#f8d7da;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<h2>Liste des Bulletins</h2>
+<div th:if=
+             "${#authorization.expression(
+'hasRole(''ADMIN'')')}">
+
+    <a th:href="@{/notes/form}">
+
+        Ajouter une note
+
+    </a>
+
+</div>
+
+<br>
+<table>
+
+    <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Groupe</th>
+        <th>Filière</th>
+        <th>Moyenne</th>
+        <th>Mention</th>
+        <th>Statut</th>
+        <th>Action</th>
+    </tr>
+
+    <tr th:each="b : ${bulletins}"
+        th:class="${b.admis} ? 'admis' : 'ajourne'">
+
+        <td th:text="${b.etudiant.nom}"></td>
+
+        <td th:text="${b.etudiant.prenom}"></td>
+
+        <td th:text="${b.etudiant.groupe}"></td>
+
+        <td th:text="${b.etudiant.filiere.nom}"></td>
+
+        <td th:text="${#numbers.formatDecimal(
+        b.moyenneGenerale,1,2)}"></td>
+
+        <td th:text="${b.mention}"></td>
+
+        <td th:text="${b.admis}
+        ? 'Admis' : 'Ajourné'"></td>
+
+        <td>
+
+            <a th:href="@{/bulletins/
+            {id}(id=${b.etudiant.id})}">
+
+                Voir bulletin
+
+            </a>
+
+        </td>
+
+    </tr>
+
+</table>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

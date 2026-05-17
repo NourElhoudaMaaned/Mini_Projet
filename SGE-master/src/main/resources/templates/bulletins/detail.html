@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Bulletin</title>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            margin:40px;
+        }
+
+        table{
+            width:100%;
+            border-collapse: collapse;
+            margin-top:20px;
+        }
+
+        th,td{
+            border:1px solid black;
+            padding:10px;
+        }
+
+        h1,h2{
+            text-align:center;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<h1>BULLETIN DE NOTES</h1>
+
+<h2>Année Universitaire 2025 - 2026</h2>
+
+<p>
+    <strong>Étudiant :</strong>
+
+    <span th:text="${bulletin.etudiant.nom}">
+    </span>
+
+    <span th:text="${bulletin.etudiant.prenom}">
+    </span>
+</p>
+
+<p>
+    <strong>Groupe :</strong>
+
+    <span th:text="${bulletin.etudiant.groupe}">
+    </span>
+</p>
+
+<p>
+    <strong>Filière :</strong>
+
+    <span th:text=
+                  "${bulletin.etudiant.filiere.nom}">
+    </span>
+</p>
+
+<table>
+
+    <tr>
+        <th>Module</th>
+        <th>Coefficient</th>
+        <th>Note</th>
+        <th>Somme</th>
+    </tr>
+
+    <tr th:each="n : ${bulletin.notes}">
+
+        <td th:text="${n.module.nom}"></td>
+
+        <td th:text=
+                    "${n.module.coefficient}"></td>
+
+        <td th:text="${n.valeur}"></td>
+
+        <td th:text=
+                    "${n.valeur * n.module.coefficient}">
+        </td>
+
+    </tr>
+
+    <tr>
+
+        <th>Total</th>
+
+        <th th:text=
+                    "${#aggregates.sum(
+        bulletin.notes.![module.coefficient])}">
+        </th>
+
+        <th></th>
+
+        <th th:text=
+                    "${#aggregates.sum(
+        bulletin.notes.![valeur * module.coefficient])}">
+        </th>
+
+    </tr>
+
+</table>
+
+<h3>
+
+    Moyenne Générale :
+    <span th:text=
+                  "${bulletin.moyenneGenerale}">
+    </span>
+
+</h3>
+
+<h3>
+
+    Mention :
+    <span th:text=
+                  "${bulletin.mention}">
+    </span>
+
+</h3>
+
+<h3>
+
+    Résultat :
+    <span th:text=
+                  "${bulletin.admis ? 'ADMIS'
+    : 'AJOURNÉ'}">
+    </span>
+
+</h3>
+
+<p style="margin-top:40px;">
+
+    Ce bulletin est généré automatiquement
+    par le Système de Gestion des Étudiants
+    (SGE). Il récapitule les notes obtenues
+    au titre de l’année universitaire en cours
+    et est consultable à tout moment via
+    l’interface web du projet.
+
+</p>
+
+<br>
+
+<a th:href="@{/bulletins}">
+
+    Retour vers la liste
+
+</a>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
